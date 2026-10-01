@@ -1,0 +1,4 @@
+.wadah/
+target/
+__pycache__/
+node_modules/
