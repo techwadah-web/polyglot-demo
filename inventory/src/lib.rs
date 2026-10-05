@@ -1,3 +1,8 @@
+//! Book inventory for the polyglot demo.
+//!
+//! Stock is kept in memory. Reserving more copies than are in stock
+//! fails with `StockError::OutOfStock` and leaves the stock unchanged.
+
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq)]
