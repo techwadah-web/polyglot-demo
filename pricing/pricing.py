@@ -10,11 +10,15 @@ class LineItem:
     quantity: int
 
 
-def apply_discount(price: float, percent: float) -> float:
-    """Return the price after a percentage discount."""
-    if not 0 <= percent <= 100:
+TIER_BONUS = {"standard": 0, "member": 5, "partner": 10}
+
+
+def apply_discount(price: float, percent: float, tier: str = "standard") -> float:
+    """Return the price after a percentage discount plus the tier bonus."""
+    total_percent = min(percent + TIER_BONUS[tier], 100)
+    if not 0 <= total_percent <= 100:
         raise ValueError("percent must be between 0 and 100")
-    return round(price * (1 - percent / 100), 2)
+    return round(price * (1 - total_percent / 100), 2)
 
 
 class PriceCalculator:
@@ -24,6 +28,8 @@ class PriceCalculator:
     def subtotal(self, items: list[LineItem]) -> float:
         return round(sum(i.unit_price * i.quantity for i in items), 2)
 
-    def total(self, items: list[LineItem], discount_percent: float = 0) -> float:
-        discounted = apply_discount(self.subtotal(items), discount_percent)
+    def total(
+        self, items: list[LineItem], discount_percent: float = 0, tier: str = "standard"
+    ) -> float:
+        discounted = apply_discount(self.subtotal(items), discount_percent, tier)
         return round(discounted * (1 + self.tax_rate), 2)
