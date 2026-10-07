@@ -21,7 +21,7 @@ export class Cart {
     this.lines = this.lines.filter((l) => l.isbn !== isbn);
   }
 
-  total(): number {
+  subtotal(): number {
     return this.lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
   }
 }
